@@ -32,8 +32,8 @@
   uint32_t _time_of_last_query;
   
   
-  float ec_calibration_coefficient_;
-  float ec_calibration_offset_;
+  float _ec_calibration_coefficient_;
+  float _ec_calibration_offset_;
   
 
 };
