@@ -1,0 +1,89 @@
+
+ #include "openag_dfr0300.h"
+ 
+ Dfr0300::Dfr0300(int ec_pin){
+   _ec_pin = ec_pin;
+   status_level = OK;
+   status_msg = "";
+ }
+ 
+ void Dfr0300::begin(){
+   Serial2.begin(9600);
+   _time_of_last_query = 0;
+   _ec_calibration_offset = 0.15;
+ }
+ 
+ void Dfr0300::update(){
+   if (millis() - _time_of_last_query > _min_update_interval){
+     getData();
+     _time_of_last_query = millis();
+   }
+ }
+ 
+ bool Dfr0300::get_water_electric_conductivity(std_msgs::Float32 &msg){
+   msg.data = _water_electric_conductivity;
+   bool res = _send_water_electric_conductivity;
+   _send_water_electric_conductivity = false;
+   return res;
+ }
+ 
+  float Dfr0161::averageArray(int* arr, int number){
+   int i;
+   int max,min;
+   float avg;
+   long amount=0;
+   if (number<=0){ //if
+     return 0;
+   } //if(number<=0)
+  
+   if (number<5){ // less than 5, calculated directly statistics
+     for(i=0;i<number;i++){ //if
+       amount+=arr[i];
+     } //for (i=0;i<number;i++)
+      avg = amount/number;
+      return avg;
+   } //if (number<5)
+  
+   else {  //first_else
+    
+       if(arr[0]<arr[1]){// if(arr[0]<arr[1])
+         min = arr[0];
+         max = arr[1];
+       } // if(arr[0]<arr[1])
+    
+       else{ // second_else
+         min = arr[1];
+         max = arr[0];
+       } // second_else
+    
+       for (i=2; i<number; i++){//for (i=2; i<number; i++)
+         if (arr[i]<min){ //if (arr[i]<min)
+           amount+=min;
+           min=arr[i];
+         } //if (arr[i]<min)
+         else 
+         { // third_else
+           if (arr[i]>max){ // if (arr[i]>max)
+             amount+=max;
+             max=arr[i];
+           } //if (arr[i]>max)
+          
+           else
+           { //fourth_else
+             amount+=arr[i];
+           } //fourth_else
+         } //third_else
+       } //for (i=2; i<number; i++)
+       avg = (float) amount/(number-2);
+     } // first_else 
+  return avg;
+} //end of function
+
+//.......................................Private.......................................//
+
+ float Dfr0300::getDat(void){
+   Serial2.println("HiData");
+   int 
+ 
+
+ }
