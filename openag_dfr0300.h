@@ -30,7 +30,7 @@
   float _water_electric_conductivity;
   bool _send_water_electric_conductivity;
   uint32_t _time_of_last_query;
-  
+  const uint32_t _min_update_interval = 2000;
   
   float _ec_calibration_coefficient_;
   float _ec_calibration_offset_;
