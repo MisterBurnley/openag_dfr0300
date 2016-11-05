@@ -21,6 +21,7 @@
   bool get_water_electric_conductivity(std_msgs::Float32 &msg);
   
   private:
+  float getTemp();
   float getData();
   float avergeArray(int* arr, int number);
   //bool readSensor();
