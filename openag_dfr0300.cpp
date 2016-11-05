@@ -1,10 +1,16 @@
 
  #include "openag_dfr0300.h"
+ #include "dsb18b20.h"
  
  Dfr0300::Dfr0300(int ec_pin){
    _ec_pin = ec_pin;
    status_level = OK;
    status_msg = "";
+ }
+ 
+ Ds18b20::Ds18b20(int pin) : _oneWire(pin) {
+  _sensors = DallasTemperature(&_oneWire);
+  _sensors.setWaitForConversion(false);
  }
  
  void Dfr0300::begin(){
@@ -15,6 +21,7 @@
  
  void Dfr0300::update(){
    if (millis() - _time_of_last_query > _min_update_interval){
+     getTamp();
      getData();
      _time_of_last_query = millis();
    }
@@ -81,9 +88,41 @@
 
 //.......................................Private.......................................//
 
- float Dfr0300::getDat(void){
+ float Dfr0300::getData(void){
    Serial2.println("HiData");
-   int 
+   int analog_sum = 0;
+   const int samples = 20;
+   for (int i = 0; i<samples; i++){
+     analog_sum += analogRead(_ec_pin);
+   }
+   float analog_average = (float) analog_sum / samples;
+   float analog_voltage = analog_average*(float)5000/1024;
+   float temperature_coefficient = 1.0 + 0.0185*(temperature_value - 25.0);
+   float voltage_coefficient = analog_voltage / temperature_coefficient;
+   if(voltage_coefficient < 0) {
+    return 0;
+    //Serial.println("No solution!");   //25^C 1413us/cm<-->about 216mv  if the voltage(compensate)<150,that is <1ms/cm,out of the range
+  }
+  else if (voltage_coefficient > 3300) {
+    return 0;
+    //Serial.println("Out of the range!");  //>20ms/cm,out of the range
+  }
+  else { 
+    if(voltage_coefficient <= 448) {
+      _water_electric_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset);
+      return _water_electric_conductivity;   //1ms/cm<EC<=3ms/cm
+    }
+    else if (voltage_coefficient <= 1457) {
+      _water_electric_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset
+      return _water_electric_conductivity;  //3ms/cm<EC<=10ms/cm
+    }
+    else {
+      _water_electric_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
+      return _water_electric_conductivity; //10ms/cm<EC<20ms/cm
+    }
+   }
+ }
  
-
+ float Dfr0300::getTemp(void){
+ 
  }
