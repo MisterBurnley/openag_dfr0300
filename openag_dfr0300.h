@@ -33,8 +33,8 @@
   uint32_t _time_of_last_query;
   const uint32_t _min_update_interval = 2000;
   
-  float _ec_calibration_coefficient_;
-  float _ec_calibration_offset_;
+  float _ec_calibration_coefficient;
+  float _ec_calibration_offset;
   
 
 };
