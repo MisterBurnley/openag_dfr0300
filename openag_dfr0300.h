@@ -18,7 +18,7 @@
   Dfr0300(int ec_pin);
   void begin();
   void update();
-  bool get_water_electric_conductivity(std_msgs::Float32 &msg);
+  bool get_water_electrical_conductivity(std_msgs::Float32 &msg);
   
   private:
   float getTemp();
@@ -28,8 +28,8 @@
   
   //Private Variables
   int _ec_pin;
-  float _water_electric_conductivity;
-  bool _send_water_electric_conductivity;
+  float _water_electrical_conductivity;
+  bool _send_water_electrical_conductivity;
   uint32_t _time_of_last_query;
   const uint32_t _min_update_interval = 2000;
   
