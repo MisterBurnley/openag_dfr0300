@@ -124,7 +124,7 @@
    }
    float analog_average = (float) analog_sum / samples;
    float analog_voltage = analog_average*(float)5000/1024;
-   float temperature_coefficient = 1.0 + 0.0185*(24.13 - 25.0);
+   float temperature_coefficient = 1.0 + 0.0185*(27 - 25.0);
    float voltage_coefficient = analog_voltage / temperature_coefficient;
    if(voltage_coefficient < 0) {
     return 0;
