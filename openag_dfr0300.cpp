@@ -1,9 +1,8 @@
 
  #include "openag_dfr0300.h"
- #include <OneWire.h>
- //#include "ds18b20.h"
+ #include "openag_ds18b20.h"
     
- OneWire::OneWire (int w_pin): _w_oneWire(w_pin){
+ Ds18b20::Ds18b20(int w_pin): _w_oneWire(w_pin){
    _w_sensors = DallasTemperature(&_w_oneWire);
    _w_sensors.setWaitForConversion(false);
  }
