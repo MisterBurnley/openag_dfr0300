@@ -28,9 +28,9 @@
  }
  
  bool Dfr0300::get_water_electric_conductivity(std_msgs::Float32 &msg){
-   msg.data = _water_electric_conductivity;
-   bool res = _send_water_electric_conductivity;
-   _send_water_electric_conductivity = false;
+   msg.data = _water_electrical_conductivity;
+   bool res = _send_water_electrical_conductivity;
+   _send_water_electrical_conductivity = false;
    return res;
  }
  
@@ -109,16 +109,17 @@
   }
   else { 
     if(voltage_coefficient <= 448) {
-      _water_electric_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset);
-      return _water_electric_conductivity;   //1ms/cm<EC<=3ms/cm
+      _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset);
+      return _water_electrical_conductivity;   //1ms/cm<EC<=3ms/cm
     }
     else if (voltage_coefficient <= 1457) {
-      _water_electric_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset
-      return _water_electric_conductivity;  //3ms/cm<EC<=10ms/cm
+      _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset
+      return _water_electrical_conductivity  //3ms/cm<EC<=10ms/cm
     }
     else {
-      _water_electric_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
-      return _water_electric_conductivity; //10ms/cm<EC<20ms/cm
+      _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
+      Serial2:println(_water_electrical_conductivity); 
+      return _water_electrical_conductivity; //10ms/cm<EC<20ms/cm
     }
    }
  }
