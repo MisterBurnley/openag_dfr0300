@@ -1,5 +1,5 @@
 
- #include "openag_dfr0300.h"
+ #include "openag_dfr0300_ds18b20.h"
  //#include "ds18b20.h"
  
  Dfr0300::Dfr0300(int ec_pin){
@@ -8,11 +8,11 @@
    status_msg = "";
  }
  
- //Dfr0300::water_temp(int _w_pin) : _w_oneWire(_w_pin) {
-  //_w_sensors = DallasTemperature(&_w_oneWire);
-  //_sw_ensors.setWaitForConversion(false);
- //}
- OneWire::_w_oneWire(5);
+ Dfr0300::water_temp(int _w_pin) : _w_oneWire(_w_pin) {
+  _w_sensors = DallasTemperature(&_w_oneWire);
+  _sw_ensors.setWaitForConversion(false);
+ }
+ //OneWire::_w_oneWire(5);
 
  void Dfr0300::begin(){
    Serial2.begin(9600);
@@ -30,7 +30,7 @@
    }
  }
  
- bool Dfr0300::get_water_electric_conductivity(std_msgs::Float32 &msg){
+ bool Dfr0300::get_water_electrical_conductivity(std_msgs::Float32 &msg){
    msg.data = _water_electrical_conductivity;
    bool res = _send_water_electrical_conductivity;
    _send_water_electrical_conductivity = false;
@@ -113,16 +113,16 @@
   else { 
     if(voltage_coefficient <= 448) {
       _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset;
-      return _water_electrical_conductivity   //1ms/cm<EC<=3ms/cm
+      return (_water_electrical_conductivity);   //1ms/cm<EC<=3ms/cm
     }
     else if (voltage_coefficient <= 1457) {
       _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset;
-      return _water_electrical_conductivity  //3ms/cm<EC<=10ms/cm
+      return (_water_electrical_conductivity);  //3ms/cm<EC<=10ms/cm
     }
     else {
       _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
       Serial2.println(_water_electrical_conductivity); 
-      return _water_electrical_conductivity //10ms/cm<EC<20ms/cm
+      return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm
     }
    }
  }
@@ -134,6 +134,7 @@
       status_msg = "";
       _w_waiting_for_conversion = false;
       _w_water_temperature = _w_sensors.getTempC(_w_address);
+      return (_w_water_temperature);
     }
     else if (millis() - _w_time_of_last_query > _w_min_update_interval) {
       status_level = ERROR;
