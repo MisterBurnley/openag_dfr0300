@@ -8,7 +8,7 @@
    status_msg = "";
  }
  
- Dfr0300::Ds18b20(int _w_pin) : _oneWire(_w_pin) {
+ Dfr0300::water_temp(int _w_pin) : _oneWire(_w_pin) {
   _w_sensors = DallasTemperature(&_w_oneWire);
   _sw_ensors.setWaitForConversion(false);
  }
