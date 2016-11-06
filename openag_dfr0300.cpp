@@ -12,19 +12,19 @@
   //_w_sensors = DallasTemperature(&_w_oneWire);
   //_sw_ensors.setWaitForConversion(false);
  //}
- 
+ OneWire::_w_oneWire(5);
+
  void Dfr0300::begin(){
    Serial2.begin(9600);
    _time_of_last_query = 0;
    _ec_calibration_offset = 0.15;
-   _w_oneWire(5);
    _w_sensors = DallasTemperature(&_w_oneWire);
-   _w_ensors.setWaitForConversion(false);
+   _w_sensors.setWaitForConversion(false);
  }
  
  void Dfr0300::update(){
    if (millis() - _time_of_last_query > _min_update_interval){
-     getTamp();
+     getTemp();
      getData();
      _time_of_last_query = millis();
    }
@@ -112,28 +112,28 @@
   }
   else { 
     if(voltage_coefficient <= 448) {
-      _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset);
+      _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset;
       return _water_electrical_conductivity   //1ms/cm<EC<=3ms/cm
     }
     else if (voltage_coefficient <= 1457) {
-      _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset
+      _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset;
       return _water_electrical_conductivity  //3ms/cm<EC<=10ms/cm
     }
     else {
       _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
       Serial2.println(_water_electrical_conductivity); 
-      return _water_electrical_conductivity; //10ms/cm<EC<20ms/cm
+      return _water_electrical_conductivity //10ms/cm<EC<20ms/cm
     }
    }
  }
  
  float Dfr0300::getTemp(void){
-  if (w__waiting_for_conversion) {
-    if (w__sensors.isConversionComplete()) {
+  if (_w_waiting_for_conversion) {
+    if (_w_sensors.isConversionComplete()) {
       status_level = OK;
       status_msg = "";
       _w_waiting_for_conversion = false;
-      _w_water_temperature = _w_sensors.getTempC(_address);
+      _w_water_temperature = _w_sensors.getTempC(_w_address);
     }
     else if (millis() - _w_time_of_last_query > _w_min_update_interval) {
       status_level = ERROR;
@@ -142,9 +142,7 @@
   }
   if (millis() - _w_time_of_last_query > _w_min_update_interval) {
     _w_sensors.requestTemperatures();
-    _waiting_for_conversion = true;
+    _w_waiting_for_conversion = true;
     _time_of_last_query = millis();
   }
- }
- 
  }
