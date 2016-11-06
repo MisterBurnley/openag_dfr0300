@@ -25,9 +25,9 @@ class Ds18b20 : public Module {
     DallasTemperature _w_sensors;
     //bool _send_water_temperature;
     float _w_water_temperature;
-    //uint32_t _time_of_last_query;
-    //bool _waiting_for_conversion;
-    //const static uint32_t _min_update_interval = 2000;
+    uint32_t _w_time_of_last_query;
+    bool _w_waiting_for_conversion;
+    const static uint32_t _w_min_update_interval = 2000;
 };
 
 #endif
