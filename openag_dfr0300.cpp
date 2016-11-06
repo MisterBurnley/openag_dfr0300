@@ -59,8 +59,52 @@
    _send_water_electrical_conductivity = false;
    return res;
  }
- 
-  float Dfr0300::averageArray(int* arr, int number){
+
+//.......................................Private.......................................//
+
+ float Dfr0300::getData(void){
+   Serial2.println("HiData");
+   int analog_sum = 0;
+   const int samples = 20;
+   for (int i = 0; i<samples; i++){
+     analog_sum += analogRead(_ec_pin);
+   }
+   float analog_average = (float) analog_sum / samples;
+   float analog_voltage = analog_average*(float)5000/1024;
+   float temperature_coefficient = 1.0 + 0.0185*(27 - 25.0);
+   float voltage_coefficient = analog_voltage / temperature_coefficient;
+   if(voltage_coefficient < 0) {
+    return 0;
+    //Serial.println("No solution!");   //25^C 1413us/cm<-->about 216mv  if the voltage(compensate)<150,that is <1ms/cm,out of the range
+  }
+  else if (voltage_coefficient > 3300) {
+    Serial2.println("Out");
+    return 0;
+    //Serial.println("Out of the range!");  //>20ms/cm,out of the range
+  }
+  else { 
+    if(voltage_coefficient <= 448) {
+      _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset;
+      Serial2.print("448: ");
+      Serial2.println(_water_electrical_conductivity); 
+      return (_water_electrical_conductivity);   //1ms/cm<EC<=3ms/cm
+    }
+    else if (voltage_coefficient <= 1457) {
+      _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset;
+      Serial2.print("1457: ");
+      Serial2.println(_water_electrical_conductivity);
+      return (_water_electrical_conductivity);  //3ms/cm<EC<=10ms/cm
+    }
+    else {
+      _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
+      Serial2.print("else: ");
+      Serial2.println(_water_electrical_conductivity); 
+      return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm
+    }
+   }
+ }
+
+ float Dfr0300::averageArray(int* arr, int number){
    Serial2.println("HiAverage");
    int i;
    int max,min;
@@ -113,49 +157,7 @@
   return avg;
 } //end of function
 
-//.......................................Private.......................................//
 
- float Dfr0300::getData(void){
-   Serial2.println("HiData");
-   int analog_sum = 0;
-   const int samples = 20;
-   for (int i = 0; i<samples; i++){
-     analog_sum += analogRead(_ec_pin);
-   }
-   float analog_average = (float) analog_sum / samples;
-   float analog_voltage = analog_average*(float)5000/1024;
-   float temperature_coefficient = 1.0 + 0.0185*(27 - 25.0);
-   float voltage_coefficient = analog_voltage / temperature_coefficient;
-   if(voltage_coefficient < 0) {
-    return 0;
-    //Serial.println("No solution!");   //25^C 1413us/cm<-->about 216mv  if the voltage(compensate)<150,that is <1ms/cm,out of the range
-  }
-  else if (voltage_coefficient > 3300) {
-    Serial2.println("Out");
-    return 0;
-    //Serial.println("Out of the range!");  //>20ms/cm,out of the range
-  }
-  else { 
-    if(voltage_coefficient <= 448) {
-      _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset;
-      Serial2.print("448: ");
-      Serial2.println(_water_electrical_conductivity); 
-      return (_water_electrical_conductivity);   //1ms/cm<EC<=3ms/cm
-    }
-    else if (voltage_coefficient <= 1457) {
-      _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset;
-      Serial2.print("1457: ");
-      Serial2.println(_water_electrical_conductivity);
-      return (_water_electrical_conductivity);  //3ms/cm<EC<=10ms/cm
-    }
-    else {
-      _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
-      Serial2.print("else: ");
-      Serial2.println(_water_electrical_conductivity); 
-      return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm
-    }
-   }
- }
  
  /*float Ds18b20::getData(void){
   if (_waiting_for_conversion) {
