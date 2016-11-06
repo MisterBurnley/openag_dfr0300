@@ -2,9 +2,9 @@
  #include "openag_dfr0300.h"
  #include "openag_ds18b20.h"
     
- Ds18b20::Ds18b20(int w_pin): _oneWireW(w_pin){
-   _w_sensors = DallasTemperature(&_oneWireW);
-   _w_sensors.setWaitForConversion(false);
+ Ds18b20::Ds18b20(int pin): _oneWire(pin){
+   _sensors = DallasTemperature(&_oneWire);
+   _sensors.setWaitForConversion(false);
  }
  
  Dfr0300::Dfr0300(int ec_pin){
@@ -101,7 +101,7 @@
    }
    float analog_average = (float) analog_sum / samples;
    float analog_voltage = analog_average*(float)5000/1024;
-   float temperature_coefficient = 1.0 + 0.0185*(_w_water_temperature - 25.0);
+   float temperature_coefficient = 1.0 + 0.0185*(_water_temperature - 25.0);
    float voltage_coefficient = analog_voltage / temperature_coefficient;
    if(voltage_coefficient < 0) {
     return 0;
@@ -129,23 +129,23 @@
  }
  
  float Dfr0300::getTemp(void){
-  if (_w_waiting_for_conversion) {
-    if (_w_sensors.isConversionComplete()) {
+  if (_waiting_for_conversion) {
+    if (_sensors.isConversionComplete()) {
       status_level = OK;
       status_msg = "";
-      _w_waiting_for_conversion = false;
-      _w_water_temperature = _w_sensors.getTempC(_w_address);
-      return (_w_water_temperature);
+      _waiting_for_conversion = false;
+      _water_temperature = _sensors.getTempC(_address);
+      return (_water_temperature);
     }
-    else if (millis() - _w_time_of_last_query > _w_min_update_interval) {
+    else if (millis() - _time_of_last_query > _min_update_interval) {
       status_level = ERROR;
       status_msg = "Sensor isn't responding to queries";
     }
   }
-  if (millis() - _w_time_of_last_query > _w_min_update_interval) {
-    _w_sensors.requestTemperatures();
-    _w_waiting_for_conversion = true;
+  if (millis() - _time_of_last_query > _w_min_update_interval) {
+    _sensors.requestTemperatures();
+    _waiting_for_conversion = true;
     _time_of_last_query = millis();
   }
-  return (_w_water_temperature);
+  return (_water_temperature);
  }
