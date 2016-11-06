@@ -1,6 +1,6 @@
 
  #include "openag_dfr0300.h"
- #include "ds18b20.h"
+ //#include "ds18b20.h"
  
  Dfr0300::Dfr0300(int ec_pin){
    _ec_pin = ec_pin;
@@ -8,7 +8,7 @@
    status_msg = "";
  }
  
- Ds18b20::Ds18b20(int _w_pin) : _oneWire(_w_pin) {
+ Dfr0300::Ds18b20(int _w_pin) : _oneWire(_w_pin) {
   _w_sensors = DallasTemperature(&_w_oneWire);
   _sw_ensors.setWaitForConversion(false);
  }
@@ -34,7 +34,7 @@
    return res;
  }
  
-  float Dfr0161::averageArray(int* arr, int number){
+  float Dfr0300::averageArray(int* arr, int number){
    int i;
    int max,min;
    float avg;
@@ -110,7 +110,7 @@
   else { 
     if(voltage_coefficient <= 448) {
       _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset);
-      return _water_electrical_conductivity;   //1ms/cm<EC<=3ms/cm
+      return _water_electrical_conductivity   //1ms/cm<EC<=3ms/cm
     }
     else if (voltage_coefficient <= 1457) {
       _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset
@@ -118,7 +118,7 @@
     }
     else {
       _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
-      Serial2:println(_water_electrical_conductivity); 
+      Serial2.println(_water_electrical_conductivity); 
       return _water_electrical_conductivity; //10ms/cm<EC<20ms/cm
     }
    }
