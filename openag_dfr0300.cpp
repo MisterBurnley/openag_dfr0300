@@ -2,10 +2,10 @@
  #include "openag_dfr0300.h"
  #include "openag_ds18b20.h"
     
- Ds18b20::Ds18b20(int pin): _oneWire(pin){
+ /*Ds18b20::Ds18b20(int pin): _oneWire(pin){
    _sensors = DallasTemperature(&_oneWire);
    _sensors.setWaitForConversion(false);
- }
+ }*/
  
  Dfr0300::Dfr0300(int ec_pin){
    _ec_pin = ec_pin;
@@ -23,7 +23,7 @@
    _ec_calibration_offset = 0.15;
  }
 
-void Ds18b20::update() {
+/*void Ds18b20::update() {
   if (_waiting_for_conversion) {
     if (_sensors.isConversionComplete()) {
       status_level = OK;
@@ -42,7 +42,7 @@ void Ds18b20::update() {
     _waiting_for_conversion = true;
     _time_of_last_query = millis();
   }
-}
+}*/
  
  void Dfr0300::update(){
    if (millis() - _time_of_last_query > _min_update_interval){
@@ -121,7 +121,7 @@ void Ds18b20::update() {
    }
    float analog_average = (float) analog_sum / samples;
    float analog_voltage = analog_average*(float)5000/1024;
-   float temperature_coefficient = 1.0 + 0.0185*(_water_temperature - 25.0);
+   float temperature_coefficient = 1.0 + 0.0185*(24.13 - 25.0);
    float voltage_coefficient = analog_voltage / temperature_coefficient;
    if(voltage_coefficient < 0) {
     return 0;
