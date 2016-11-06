@@ -18,7 +18,7 @@
  class Dfr0300: public Module{
   public:
   //Public Functions
-  Dfr0300(int ec_pin, int w_pin);
+  Dfr0300(int ec_pin);
   //water_temp(int w_pin);
   void begin();
   void update();
@@ -51,8 +51,8 @@
   uint32_t _w_time_of_last_query;
   bool _w_waiting_for_conversion;
   const static uint32_t _w_min_update_interval = 1800;
-  int _w_pin = 5;
-  int w_pin = _w_pin;
+  //int _w_pin = 5;
+  //int w_pin = _w_pin;
 
 };
 
