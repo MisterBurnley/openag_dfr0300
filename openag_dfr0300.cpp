@@ -8,15 +8,18 @@
    status_msg = "";
  }
  
- Dfr0300::water_temp(int _w_pin) : _oneWire(_w_pin) {
-  _w_sensors = DallasTemperature(&_w_oneWire);
-  _sw_ensors.setWaitForConversion(false);
- }
+ //Dfr0300::water_temp(int _w_pin) : _w_oneWire(_w_pin) {
+  //_w_sensors = DallasTemperature(&_w_oneWire);
+  //_sw_ensors.setWaitForConversion(false);
+ //}
  
  void Dfr0300::begin(){
    Serial2.begin(9600);
    _time_of_last_query = 0;
    _ec_calibration_offset = 0.15;
+   _w_oneWire(5);
+   _w_sensors = DallasTemperature(&_w_oneWire);
+   _w_ensors.setWaitForConversion(false);
  }
  
  void Dfr0300::update(){
