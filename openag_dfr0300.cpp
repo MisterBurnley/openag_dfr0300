@@ -18,6 +18,7 @@
    Serial2.begin(9600);
    _time_of_last_query = 0;
    _ec_calibration_offset = 0.15;
+    Onewire _w_oneWire=5;
    _w_sensors = DallasTemperature(&_w_oneWire);
    _w_sensors.setWaitForConversion(false);
  }
