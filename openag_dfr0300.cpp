@@ -10,8 +10,8 @@
    status_msg = "";
  }
  
- Dfr0300::water_temp(int _w_pin) 
- }
+ //Dfr0300::water_temp(int _w_pin) 
+ //}
  //OneWire::_w_oneWire(5);
 
  void Dfr0300::begin(){
