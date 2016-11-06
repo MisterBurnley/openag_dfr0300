@@ -66,6 +66,7 @@
    Serial2.println("HiData");
    int analog_sum = 0;
    const int samples = 20;
+   _send_water_electrical_conductivity = true;
    for (int i = 0; i<samples; i++){
      analog_sum += analogRead(_ec_pin);
    }
@@ -85,23 +86,22 @@
   else { 
     if(voltage_coefficient <= 448) {
       _water_electrical_conductivity = (6.84*voltage_coefficient-64.32)/1000 + _ec_calibration_offset;
-      Serial2.print("448: ");
+      /*Serial2.print("448: ");
       Serial2.println(_water_electrical_conductivity); 
-      return (_water_electrical_conductivity);   //1ms/cm<EC<=3ms/cm
+      return (_water_electrical_conductivity);   //1ms/cm<EC<=3ms/cm*/
     }
     else if (voltage_coefficient <= 1457) {
       _water_electrical_conductivity = (6.98*voltage_coefficient-127)/1000 + _ec_calibration_offset;
-      Serial2.print("1457: ");
+      /*Serial2.print("1457: ");
       Serial2.println(_water_electrical_conductivity);
-      return (_water_electrical_conductivity);  //3ms/cm<EC<=10ms/cm
+      return (_water_electrical_conductivity);  //3ms/cm<EC<=10ms/cm*/
     }
     else {
       _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
-      Serial2.print("else: ");
+      /*Serial2.print("else: ");
       Serial2.println(_water_electrical_conductivity); 
-      return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm
+      return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm*/
     }
-    _send_water_electrical_conductivity = true;
     return (_water_electrical_conductivity);
    }
  }
