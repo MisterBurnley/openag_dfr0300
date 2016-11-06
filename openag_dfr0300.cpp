@@ -22,10 +22,30 @@
    _time_of_last_query = 0;
    _ec_calibration_offset = 0.15;
  }
+
+void Ds18b20::update() {
+  if (_waiting_for_conversion) {
+    if (_sensors.isConversionComplete()) {
+      status_level = OK;
+      status_msg = "";
+      _waiting_for_conversion = false;
+      _water_temperature = _sensors.getTempC(_address);
+      _send_water_temperature = true;
+    }
+    else if (millis() - _time_of_last_query > _min_update_interval) {
+      status_level = ERROR;
+      status_msg = "Sensor isn't responding to queries";
+    }
+  }
+  if (millis() - _time_of_last_query > _min_update_interval) {
+    _sensors.requestTemperatures();
+    _waiting_for_conversion = true;
+    _time_of_last_query = millis();
+  }
+}
  
  void Dfr0300::update(){
    if (millis() - _time_of_last_query > _min_update_interval){
-     getTemp();
      getData();
      _time_of_last_query = millis();
    }
@@ -128,7 +148,7 @@
    }
  }
  
- float Dfr0300::getTemp(void){
+ /*float Ds18b20::getData(void){
   if (_waiting_for_conversion) {
     if (_sensors.isConversionComplete()) {
       status_level = OK;
@@ -148,4 +168,4 @@
     _time_of_last_query = millis();
   }
   return (_water_temperature);
- }
+ }*/
