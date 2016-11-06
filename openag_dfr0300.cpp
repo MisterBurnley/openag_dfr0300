@@ -3,11 +3,12 @@
  #include <OneWire.h>
  //#include "ds18b20.h"
     
- OneWire::OneWire _w_oneWire=5;
-
- Dfr0300::Dfr0300(int ec_pin){
+ OneWire::OneWire (int w_pin): _w_oneWire(w_pin){
    _w_sensors = DallasTemperature(&_w_oneWire);
    _w_sensors.setWaitForConversion(false);
+ }
+ 
+ Dfr0300::Dfr0300(int ec_pin){
    _ec_pin = ec_pin;
    status_level = OK;
    status_msg = "";
