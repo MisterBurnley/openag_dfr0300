@@ -75,12 +75,12 @@
    float temperature_coefficient = 1.0 + 0.0185*(0 - 25.0);
    float voltage_coefficient = analog_voltage / temperature_coefficient;
    if(voltage_coefficient < 0) {
-    return 0;
+    _water_electrical_conductivity = 0;
     //Serial.println("No solution!");   //25^C 1413us/cm<-->about 216mv  if the voltage(compensate)<150,that is <1ms/cm,out of the range
   }
   else if (voltage_coefficient > 3300) {
     Serial2.println("Out");
-    return 0;
+    _water_electrical_conductivity = 0;
     //Serial.println("Out of the range!");  //>20ms/cm,out of the range
   }
   else { 
@@ -102,8 +102,8 @@
       Serial2.println(_water_electrical_conductivity); 
       return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm*/
     }
-    return (_water_electrical_conductivity);
    }
+   return (_water_electrical_conductivity);
  }
 
  /*float Dfr0300::averageArray(int* arr, int number){
