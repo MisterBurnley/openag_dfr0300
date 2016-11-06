@@ -28,7 +28,7 @@
   private:
   float getTemp();
   float getData();
-  float avergeArray(int* arr, int number);
+  float averageArray(int* arr, int number);
   //bool readSensor();
   
   //Private Variables
