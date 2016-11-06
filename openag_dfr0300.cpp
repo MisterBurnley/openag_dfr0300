@@ -8,9 +8,9 @@
    status_msg = "";
  }
  
- Ds18b20::Ds18b20(int pin) : _oneWire(pin) {
-  _sensors = DallasTemperature(&_oneWire);
-  _sensors.setWaitForConversion(false);
+ Ds18b20::Ds18b20(int _w_pin) : _oneWire(_w_pin) {
+  _w_sensors = DallasTemperature(&_w_oneWire);
+  _sw_ensors.setWaitForConversion(false);
  }
  
  void Dfr0300::begin(){
@@ -97,7 +97,7 @@
    }
    float analog_average = (float) analog_sum / samples;
    float analog_voltage = analog_average*(float)5000/1024;
-   float temperature_coefficient = 1.0 + 0.0185*(temperature_value - 25.0);
+   float temperature_coefficient = 1.0 + 0.0185*(_w_water_temperature - 25.0);
    float voltage_coefficient = analog_voltage / temperature_coefficient;
    if(voltage_coefficient < 0) {
     return 0;
@@ -124,5 +124,23 @@
  }
  
  float Dfr0300::getTemp(void){
+  if (w__waiting_for_conversion) {
+    if (w__sensors.isConversionComplete()) {
+      status_level = OK;
+      status_msg = "";
+      _w_waiting_for_conversion = false;
+      _w_water_temperature = _w_sensors.getTempC(_address);
+    }
+    else if (millis() - _w_time_of_last_query > _w_min_update_interval) {
+      status_level = ERROR;
+      status_msg = "Sensor isn't responding to queries";
+    }
+  }
+  if (millis() - _w_time_of_last_query > _w_min_update_interval) {
+    _w_sensors.requestTemperatures();
+    _waiting_for_conversion = true;
+    _time_of_last_query = millis();
+  }
+ }
  
  }
