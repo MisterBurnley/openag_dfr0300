@@ -2,15 +2,15 @@
  #include "openag_dfr0300_ds18b20.h"
  //#include "ds18b20.h"
  
- Dfr0300::Dfr0300(int ec_pin){
+ Dfr0300::Dfr0300(int ec_pin, int w_pin): _w_oneWire(_w_pin) {
+   _w_sensors = DallasTemperature(&_w_oneWire);
+   _sw_ensors.setWaitForConversion(false);
    _ec_pin = ec_pin;
    status_level = OK;
    status_msg = "";
  }
  
- Dfr0300::water_temp(int _w_pin) : _w_oneWire(_w_pin) {
-  _w_sensors = DallasTemperature(&_w_oneWire);
-  _sw_ensors.setWaitForConversion(false);
+ Dfr0300::water_temp(int _w_pin) 
  }
  //OneWire::_w_oneWire(5);
 
