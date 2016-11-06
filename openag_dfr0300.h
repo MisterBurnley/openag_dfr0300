@@ -8,7 +8,7 @@
 #include "WProgram.h"
 #endif
 
-//#include <OneWire.h>
+#include <OneWire.h>
 #include <openag_module.h>
 #include <std_msgs/Float32.h>
 
@@ -44,6 +44,7 @@
   
   //
   OneWire _w_oneWire;
+  const int w_pin = 5;
   DeviceAddress _w_address;
   DallasTemperature _w_sensors;
   //bool _send_water_temperature;
