@@ -8,7 +8,7 @@
 #include "WProgram.h"
 #endif
 
-#include <OneWire.h>
+//#include <OneWire.h>
 #include <openag_module.h>
 #include <std_msgs/Float32.h>
 
