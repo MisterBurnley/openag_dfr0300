@@ -3,7 +3,7 @@
     "class_name": "Dfr0300",
     "header_file": "openag_dfr0300.h",
     "outputs": {
-        "water_electric_conductivity": {
+        "water_electrical_conductivity": {
             "type": "std_msgs/Float32"
         }
     },
