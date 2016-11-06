@@ -43,7 +43,7 @@
   float _ec_calibration_offset;
   
   //
-  OneWire _w_oneWire;
+  //OneWire _w_oneWire;
   DeviceAddress _w_address;
   DallasTemperature _w_sensors;
   //bool _send_water_temperature;
