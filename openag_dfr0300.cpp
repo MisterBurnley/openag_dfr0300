@@ -1,8 +1,8 @@
 
- #include "openag_dfr0300_ds18b20.h"
+ #include "openag_dfr0300.h"
  //#include "ds18b20.h"
  
- Dfr0300::Dfr0300(int ec_pin, int w_pin): _w_oneWire(_w_pin) {
+ Dfr0300::Dfr0300(int ec_pin, int _w_pin): _w_oneWire(_w_pin) {
    _w_sensors = DallasTemperature(&_w_oneWire);
    _sw_ensors.setWaitForConversion(false);
    _ec_pin = ec_pin;
