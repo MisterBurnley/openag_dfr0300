@@ -23,7 +23,7 @@
   void update();
   bool get_water_electrical_conductivity(std_msgs::Float32 &msg);
   //
-  Ds18b20(int _w_pin);
+  Ds18b20(int w_pin);
   
   private:
   float getTemp();
