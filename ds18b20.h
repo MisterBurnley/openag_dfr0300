@@ -14,7 +14,7 @@
  */
 class Ds18b20 : public Module {
   public:
-    Ds18b20(int _w_pin);
+    Ds18b20(int _w_pin=5);
     void begin();
     //void update();
     // bool get_water_temperature(std_msgs::Float32 &msg);
