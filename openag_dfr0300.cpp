@@ -2,9 +2,10 @@
  #include "openag_dfr0300.h"
  //#include "ds18b20.h"
  
- Dfr0300::Dfr0300(int ec_pin, int _w_pin): _w_oneWire(_w_pin) {
+ Dfr0300::Dfr0300(int ec_pin):{
+   OneWire _w_oneWire=5;
    _w_sensors = DallasTemperature(&_w_oneWire);
-   _sw_ensors.setWaitForConversion(false);
+   _w_sensors.setWaitForConversion(false);
    _ec_pin = ec_pin;
    status_level = OK;
    status_msg = "";
@@ -18,9 +19,6 @@
    Serial2.begin(9600);
    _time_of_last_query = 0;
    _ec_calibration_offset = 0.15;
-    Onewire _w_oneWire=5;
-   _w_sensors = DallasTemperature(&_w_oneWire);
-   _w_sensors.setWaitForConversion(false);
  }
  
  void Dfr0300::update(){
@@ -147,4 +145,5 @@
     _w_waiting_for_conversion = true;
     _time_of_last_query = millis();
   }
+  return (_w_water_temperature);
  }
