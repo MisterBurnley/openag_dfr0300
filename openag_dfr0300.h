@@ -12,6 +12,9 @@
 #include <openag_module.h>
 #include <std_msgs/Float32.h>
 
+//
+#include <DallasTemperature.h>
+
  class Dfr0300: public Module{
   public:
   //Public Functions
@@ -19,6 +22,8 @@
   void begin();
   void update();
   bool get_water_electrical_conductivity(std_msgs::Float32 &msg);
+  //
+  DS18b20 (int _w_pin=5);
   
   private:
   float getTemp();
@@ -31,10 +36,20 @@
   float _water_electrical_conductivity;
   bool _send_water_electrical_conductivity;
   uint32_t _time_of_last_query;
-  const uint32_t _min_update_interval = 2000;
+  const uint32_t _min_update_interval = 1800;
   
   float _ec_calibration_coefficient;
   float _ec_calibration_offset;
+  
+  //
+  OneWire _w_oneWire;
+    DeviceAddress _w_address;
+    DallasTemperature _w_sensors;
+    //bool _send_water_temperature;
+    float _w_water_temperature;
+    uint32_t _w_time_of_last_query;
+    bool _w_waiting_for_conversion;
+    const static uint32_t _w_min_update_interval = 1800;
   
 
 };
