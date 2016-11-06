@@ -1,5 +1,5 @@
 {
-    "description": "Water Electric Conductivity Sensor",
+    "description": "Water Electrical Conductivity Sensor",
     "class_name": "Dfr0300",
     "header_file": "openag_dfr0300.h",
     "outputs": {
