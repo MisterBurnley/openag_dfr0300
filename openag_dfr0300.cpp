@@ -101,6 +101,8 @@
       Serial2.println(_water_electrical_conductivity); 
       return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm
     }
+    _send_water_electrical_conductivity = true;
+    return (_water_electrical_conductivity);
    }
  }
 
