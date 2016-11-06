@@ -50,8 +50,8 @@
   uint32_t _w_time_of_last_query;
   bool _w_waiting_for_conversion;
   const static uint32_t _w_min_update_interval = 1800;
-  int _w_pin = 5;
-  w_pin = _w_pin;
+  //int _w_pin = 5;
+  //w_pin = _w_pin;
 
 };
 
