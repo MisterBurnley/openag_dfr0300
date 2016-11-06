@@ -23,7 +23,7 @@
   void update();
   bool get_water_electrical_conductivity(std_msgs::Float32 &msg);
   //
-  DS18b20 (int _w_pin=5);
+  Ds18b20(int _w_pin);
   
   private:
   float getTemp();
@@ -43,14 +43,15 @@
   
   //
   OneWire _w_oneWire;
-    DeviceAddress _w_address;
-    DallasTemperature _w_sensors;
-    //bool _send_water_temperature;
-    float _w_water_temperature;
-    uint32_t _w_time_of_last_query;
-    bool _w_waiting_for_conversion;
-    const static uint32_t _w_min_update_interval = 1800;
-  
+  DeviceAddress _w_address;
+  DallasTemperature _w_sensors;
+  //bool _send_water_temperature;
+  float _w_water_temperature;
+  uint32_t _w_time_of_last_query;
+  bool _w_waiting_for_conversion;
+  const static uint32_t _w_min_update_interval = 1800;
+  int _w_pin = 5;
+  w_pin = _w_pin;
 
 };
 
