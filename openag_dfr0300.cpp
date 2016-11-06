@@ -19,6 +19,7 @@
 
  void Dfr0300::begin(){
    Serial2.begin(9600);
+   Serial2.println("Hi");
    _time_of_last_query = 0;
    _ec_calibration_offset = 0.15;
  }
@@ -46,12 +47,14 @@
  
  void Dfr0300::update(){
    if (millis() - _time_of_last_query > _min_update_interval){
+     Serial2.println("HiUpdate");
      getData();
      _time_of_last_query = millis();
    }
  }
  
  bool Dfr0300::get_water_electrical_conductivity(std_msgs::Float32 &msg){
+   Serial2.println(_water_electrical_conductivity); 
    msg.data = _water_electrical_conductivity;
    bool res = _send_water_electrical_conductivity;
    _send_water_electrical_conductivity = false;
@@ -59,6 +62,7 @@
  }
  
   float Dfr0300::averageArray(int* arr, int number){
+   Serial2.println("HiAverage");
    int i;
    int max,min;
    float avg;
@@ -142,7 +146,6 @@
     }
     else {
       _water_electrical_conductivity = (5.3*voltage_coefficient+2278)/1000 + _ec_calibration_offset;
-      Serial2.println(_water_electrical_conductivity); 
       return (_water_electrical_conductivity); //10ms/cm<EC<20ms/cm
     }
    }
