@@ -20,6 +20,7 @@
   //Public Functions
   Dfr0300(int ec_pin);
   //water_temp(int w_pin);
+  //Ds18b20(int w_pin);
   void begin();
   void update();
   bool get_water_electrical_conductivity(std_msgs::Float32 &msg);
