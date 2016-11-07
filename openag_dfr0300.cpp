@@ -65,7 +65,7 @@
  float Dfr0300::getData(void){
    Serial2.println("HiData");
    int analog_sum = 0;
-   const int samples = 20;
+   const int samples = 40;
    _send_water_electrical_conductivity = true;
    for (int i = 0; i<samples; i++){
      analog_sum += analogRead(_ec_pin);
