@@ -69,6 +69,7 @@
    _send_water_electrical_conductivity = true;
    for (int i = 0; i<samples; i++){
      analog_sum += analogRead(_ec_pin);
+     delay(2);
    }
    float analog_average = (float) analog_sum / samples;
    float analog_voltage = analog_average*(float)5000/1024;
