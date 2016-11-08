@@ -1,11 +1,11 @@
 
  #include "openag_dfr0300.h"
- //#include "openag_ds18b20.h"
+ #include "openag_ds18b20.h"
     
- /*Ds18b20::Ds18b20(int pin): _oneWire(pin){
+ Ds18b20::Ds18b20(5): _oneWire(5){
    _sensors = DallasTemperature(&_oneWire);
    _sensors.setWaitForConversion(false);
- }*/
+ }
  
  Dfr0300::Dfr0300(int ec_pin){
    _ec_pin = ec_pin;
