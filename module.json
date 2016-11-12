@@ -2,6 +2,12 @@
     "description": "Water Electrical Conductivity Sensor",
     "class_name": "Dfr0300",
     "header_file": "openag_dfr0300.h",
+    "arguments": [
+        {
+           "name": "pin",
+            "type": "int"
+        }
+        ],
     "outputs": {
         "water_electrical_conductivity": {
             "type": "std_msgs/Float32"
